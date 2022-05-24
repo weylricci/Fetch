@@ -1,0 +1,56 @@
+﻿@page
+@model BookAppWithPurchase.Pages.PurchaseModel
+@{
+    ViewData["Title"] = "Book Store - Payment Confirmation";
+
+}
+<body>
+    <div class = "container-fluid bg-light" style="border:2px solid">
+        <h3><u>Payment Confirmation</u></h3>
+        <br />
+        <h5>You have selected the following books:</h5>
+
+        <table id="tableBooks">
+            <thead>
+                <tr>
+                    <th>BookId</th>
+                    <th>Title</th>
+                    <th>ISBN</th>
+                    <th>Publisher</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var book in Model.books)
+                {
+                    <tr>
+                        <td> @book.BookId </td>
+                        <td style="color:blue; font-weight:700; font-style:italic"><u> @book.Title</u> </td>
+                        <td> @book.Isbn </td>
+                        <td> @book.PublisherName </td>
+                        <td> @book.AuthorName </td>
+                        <td> @book.CategoryName </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+ 
+        <br /><br />
+
+        <div style="text-align:center">
+            <h3>Your purchase amount is $ @Model.amount</h3>
+        </div>
+
+        <br /><hr /><br />
+
+        <div style="text-align: center">
+            <a href="./Payment" class="btn btn-info" role="button">Proceed to Payment</a>            
+            &nbsp;&nbsp;&nbsp;
+            <a href="./Books" class="btn btn-info" role="button">Continue Shopping</a> 
+            
+            <br /><br /><br />
+        </div>
+
+    </div>
+</body>

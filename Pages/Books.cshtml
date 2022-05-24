@@ -1,0 +1,276 @@
+﻿@page
+@model BookApp.Pages.BooksModel
+@{
+    ViewData["Title"] = "Book Store - Books";
+}
+
+<head>
+    <style>
+        #col{
+            border: 1px solid
+        }
+    </style>
+
+    <script language="JavaScript">
+    <!--
+    window.onload = function onLoad() {  
+        //alert("Page has been loaded!");
+        if (sessionStorage.getItem('amount')) { //check storage
+            //set check boxes
+            setCheckBox();
+
+            //set amount, books selected from storage
+            var amount = sessionStorage.getItem('amount');
+            var booksSelected = sessionStorage.getItem('booksSelected');
+
+            document.getElementById('txtAmount').value = amount;
+            document.getElementById('txtBox').value = booksSelected;
+       }
+    }
+    
+    function setCheckBox() {
+        var bookIDs = sessionStorage.getItem('bookIDs');
+        bookIDs = bookIDs.substring(0, bookIDs.length - 1)
+        var bookIDArray = bookIDs.split(',');
+        var len = bookIDArray.length;
+
+        var table = document.getElementById('tableBooks');
+        var rows = table.rows;
+        var rowCount = rows.length;
+
+        for (var i = 1; i < rowCount; i++) { // iterate over rows
+            var row = rows[i];
+
+            var bookID = row.cells[1].textContent.trim();
+            for (var j = 0; j < len; j++) {
+                if (bookID == bookIDArray[j]) {
+                    var chkBox = row.cells[0];
+                    chkBox.children[0].checked = true;
+                }
+            }
+
+        } // end for rows
+
+    }
+
+    function categoryClick(e) {
+        var cat = $("input[name='category']:checked").val();
+        document.getElementById('lblCategory').innerHTML = "<u>" + cat + "</u>";
+        
+        //fetch data
+        let url = "./Category?category=" + cat;
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true); 
+        xhr.setRequestHeader('Content-Type', 'application/text');        
+        xhr.responseType = 'text'; 
+
+        xhr.onload = function() {
+            //alert(`Loaded: ${xhr.status} ${xhr.responseText}`);
+            let txt = xhr.responseText;
+            //alert("Text: " + txt);
+            const jsonObj = JSON.parse(txt);
+
+            let tblBody = document.querySelector("tbody");
+            tblBody.innerHTML = "";
+
+            //process json array
+            for (var i = 0; i < jsonObj.length; i++) {
+                let fragment = document.createDocumentFragment();
+
+                let tblRow = document.createElement("tr");
+                fragment.appendChild(tblRow);
+
+                //checkbox
+                let td0 = document.createElement("td");
+                td0.style = "text-align: center"
+                let chkBox = document.createElement("input");
+                chkBox.type = "checkbox";
+                chkBox.onclick = checkBoxClick;
+                td0.appendChild(chkBox);
+                fragment.firstChild.appendChild(td0);
+
+                //BookID
+                let td = document.createElement("td");
+                let bookId = jsonObj[i].BookId;
+                td.textContent = bookId;
+                fragment.firstChild.appendChild(td);
+
+                let td1 = document.createElement("td");
+                td1.textContent = jsonObj[i].Title;
+                td1.style= "color:blue; font-weight:700; font-style:italic";
+                fragment.firstChild.appendChild(td1);
+
+                let td2 = document.createElement("td");
+                td2.textContent = jsonObj[i].ISBN;
+                fragment.firstChild.appendChild(td2);
+
+                let td3 = document.createElement("td");
+                td3.textContent = jsonObj[i].PublisherName;
+                fragment.firstChild.appendChild(td3);
+
+                let td4 = document.createElement("td");
+                td4.textContent = jsonObj[i].AuthorName;
+                fragment.firstChild.appendChild(td4);
+
+                let td5 = document.createElement("td");
+                td5.textContent = jsonObj[i].CategoryName;
+                fragment.firstChild.appendChild(td5);
+      
+                tblBody.appendChild(fragment);
+
+                setCheckBox();
+            }
+
+        }
+
+        xhr.send();
+        
+     }
+
+    function checkBoxClick(e) {
+        var amount = 0;
+        var booksSelected = "";
+        var bookIDs = ""
+
+        if (sessionStorage.getItem('amount')) { //check storage
+            amount = Number(sessionStorage.getItem('amount'));
+            booksSelected = sessionStorage.getItem('booksSelected');
+            bookIDs = sessionStorage.getItem('bookIDs');
+        }
+
+        //get bookID and title
+        var bookID = e.parentElement.nextElementSibling.innerHTML.trim();
+        var title = e.parentElement.nextElementSibling.nextElementSibling.innerHTML.trim();
+
+        if (e.checked) {
+            //alert("Checked");
+            //update amount, books selected, bookIDs
+            amount += 100;
+            booksSelected += title + "\n";
+            bookIDs += bookID + ",";
+        }
+        else {
+            //alert("Unchecked");
+            amount -= 100;
+
+            //remove title from booksSelected
+            title += "\n";
+            var pos = booksSelected.indexOf(title);
+            var s1 = booksSelected.substring(0, pos);
+            var s2 = booksSelected.substring(pos + title.length);
+            booksSelected = s1 + s2;
+
+            //remove bookID from bookIDs
+            bookID += ",";
+            pos = bookIDs.indexOf(bookID);
+            s1 = bookIDs.substring(0, pos);
+            s2 = bookIDs.substring(pos + bookID.length);
+            bookIDs = s1 + s2;
+        }
+
+        //update books selected, amount
+        document.getElementById('txtBox').value = booksSelected;
+        document.getElementById('txtAmount').value = amount;
+
+        //update session storage
+        sessionStorage.setItem('amount', amount.toString());
+        sessionStorage.setItem('booksSelected', booksSelected);
+        sessionStorage.setItem('bookIDs', bookIDs);
+
+     }
+
+    function formSubmit() {
+        var amount = Number(document.getElementById('txtAmount').value);
+        if (amount > 0) {
+            //get params
+            var amount = sessionStorage.getItem('amount');
+            var bookIDs = sessionStorage.getItem('bookIDs');
+
+            //construct url
+            var form = document.getElementById("form1");
+            var action = form.action + "?";
+            action += "amount=" + amount + "&bookIDs=" + bookIDs;
+            window.location.href = action;
+        }
+        else{
+            alert("Your Shopping Cart is empty! Kindly select books to purchase.");
+        }
+    }
+
+    //-->
+    </script>
+</head>
+
+<body>
+
+    <h3><u>Books</u></h3>
+    <div class = "container-fluid bg-light" style="margin-top:10px">
+        <div class="row">
+            <div class="col-md-2" id="col" style="color:darkolivegreen; font-weight:700; padding-top: 10px">
+                <h5><u>Browse by Category:</u></h5>
+
+                <input type="radio" id="category" name="category" value="All" onclick="categoryClick();" checked/> All<br /> 
+                @foreach(var category in Model.categories)
+                {
+                    <input type="radio" id="category" name="category" value="@category.CategoryName" onclick="categoryClick()" /> @category.CategoryName<br /> 
+                }
+
+            </div>
+
+            <div class="col-md-10" id="col" style="padding-top:10px" >
+
+                <div style="text-align:center">  
+                    <h5>Category: <label id="lblCategory"><u>All</u></label></h5>
+                </div>
+
+                <table id="tableBooks">
+                    <thead>
+                        <tr>
+                            <th>Purchase</th>
+                            <th>BookId</th>
+                            <th>Title</th>
+                            <th>ISBN</th>
+                            <th>Publisher</th>
+                            <th>Author</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var book in Model.books)
+                        {
+                            <tr>
+                                <td style="text-align:center">
+                                    <input type="checkbox" onclick="checkBoxClick(this)" />
+                                </td>
+                                <td> @book.BookId </td>
+                                <td style="color:blue; font-weight:700; font-style:italic"> @book.Title</td>
+                                <td> @book.Isbn </td>
+                                <td> @book.PublisherName </td>
+                                <td> @book.AuthorName </td>
+                                <td> @book.CategoryName </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <form name="form1" id="form1" method="get" action="./Purchase">
+                    <div style="text-align: center">
+                        <br />
+                        <h5>You have selected:</h5>
+                        <textarea class="input" rows="5" cols="40" id="txtBox" style="margin-top:0px"></textarea>
+                        <br />
+                        <label style="color:brown; font-weight:700">Amount: $ </label>
+                        <input type="text" id="txtAmount" value="0" style="width:60px; text-align:center"/>
+
+                        <br /><br /><br />
+
+                        <!--<input id="purchaseButton" type="submit" value="Purchase" class="btn-info">-->
+                        <button type="button" style="background-color:cyan" onclick="formSubmit()">Purchase</button>
+
+                        <br /><br />
+                    </div>
+
+                </form>
+            </div> <!--column right-->
+         </div> <!--row-->
+    </div> <!--container-->
+</body>

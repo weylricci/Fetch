@@ -1,0 +1,49 @@
+﻿@page
+@model BookAppWithPurchase.Pages.PaymentModel
+@{
+    ViewData["Title"] = "Book Store - Make Payment";
+}
+
+<head>
+    <style>
+        #col{
+            border: 1px solid
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class = "container-fluid bg-light" style="border:2px solid">
+        <h3><u>Make Payment</u></h3>
+        <br />
+        <h5>Choose your Payment Option:</h5>
+        <br />
+        <div class="row">       
+            <div class="col-md-6" id="col" style="color:darkolivegreen; font-weight:700; padding-top: 10px">
+               Options:
+                <select name="paymentOption" id="paymentOption">
+                  <option value="cash">Cash</option>
+                  <option value="card">Debit/Credit Card</option>
+                  <option value="netBanking">Net Banking</option>
+                  <option value="upi">UPI/Bhim</option>
+                </select>
+
+            </div>
+
+            <div class="col-md-6" id="col" style="color:darkolivegreen; font-weight:700; padding-top: 10px">
+                Options:<br />
+
+                <input type="radio" id="cash" name="payOption" value="cash" checked/> Cash<br />
+                <input type="radio" id="card" name="payOption" value="card" /> Debit/Credit Card<br />
+                <input type="radio" id="netBanking" name="payOption" value="netBanking" /> Net Banking<br />
+                <input type="radio" id="upi" name="payOption" value="upi" /> UPI/BHIM<br />
+                <br /><br />
+            </div>
+  
+        </div>
+
+    </div>
+
+</body>
