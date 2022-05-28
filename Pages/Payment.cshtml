@@ -10,6 +10,44 @@
             border: 1px solid
         }
     </style>
+    <script>
+        if (sessionStorage.getItem("userId")) {
+            let booksPurchased = sessionStorage.getItem("booksPurchased");
+            console.log("booksPurchased : ", booksPurchased);
+            let books = JSON.parse(booksPurchased);
+            console.log("Json : ", books);
+
+            books.forEach(function(book) {
+                console.log(book);
+
+                fetch("addBookToUserAccount", {
+                    method: 'POST',
+                    headers: {
+                        "Content-type": "application/json"
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(book)
+                })
+                .then (response => {
+                    console.log("Response : ", response);
+                    if (response.status === 201) {
+                        console.log("Success: Book added.");         
+                    }
+                    else
+                        console.log("Error: Book could not be added.")
+                });
+            });
+
+            // clear session storage
+            sessionStorage.removeItem("amount");
+            sessionStorage.removeItem("bookIDs");
+            sessionStorage.removeItem("booksSelected");
+            sessionStorage.removeItem("booksPurchased");
+
+            
+        }
+
+    </script>
 </head>
 
 

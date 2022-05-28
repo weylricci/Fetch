@@ -41,18 +41,6 @@ namespace Fetch.Pages
             Response.CompleteAsync().Wait();
         }
 
-        public void OnPost()
-        {
-            Console.WriteLine("In Post Method ...");
-          
-            string userName = Request.Form["UserName"];
-            string password = Request.Form["UserPassword"];
-
-            Console.WriteLine("UserName : " + userName);
-            Console.WriteLine("Password : " + password);
-           
-        }
-
     }
     public class Data2
     {

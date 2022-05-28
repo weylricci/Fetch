@@ -104,10 +104,13 @@
         
         }
 
+        let booksPurchasedMap = new Map();
         function checkBoxClick(e) {
             var amount = 0;
             var booksSelected = "";
-            var bookIDs = ""
+            var bookIDs = "";
+            let booksPurchased = [];
+
 
             if (sessionStorage.getItem('amount')) { //check storage
                 amount = Number(sessionStorage.getItem('amount'));
@@ -125,6 +128,22 @@
                 amount += 100;
                 booksSelected += title + "\n";
                 bookIDs += bookID + ",";
+                if (sessionStorage.getItem("userId")) { // record books purchased
+                    let userId = Number(sessionStorage.getItem("userId"));
+                    let isbn = e.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML.trim();
+                    let publisher = e.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML.trim();
+                    let author = e.parentElement.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.innerHTML.trim();
+
+
+                    let bookEntry = {};
+                    bookEntry.userId = userId; bookEntry.title = title;
+                    bookEntry.isbn = isbn; bookEntry.publisher = publisher;
+                    bookEntry.author = author; bookEntry.price = 100;
+
+
+                    booksPurchasedMap.set(bookID, bookEntry);
+                    console.log(booksPurchasedMap);
+                }
             }
             else {
                 //alert("Unchecked");
@@ -137,12 +156,19 @@
                 var s2 = booksSelected.substring(pos + title.length);
                 booksSelected = s1 + s2;
 
+                //remove book entry from books purchased map
+                if (sessionStorage.getItem("userId")) {
+                    booksPurchasedMap.delete(bookID);
+                    console.log(booksPurchasedMap);
+                }
+
                 //remove bookID from bookIDs
                 bookID += ",";
                 pos = bookIDs.indexOf(bookID);
                 s1 = bookIDs.substring(0, pos);
                 s2 = bookIDs.substring(pos + bookID.length);
                 bookIDs = s1 + s2;
+
             }
 
             //update books selected, amount
@@ -153,6 +179,15 @@
             sessionStorage.setItem('amount', amount.toString());
             sessionStorage.setItem('booksSelected', booksSelected);
             sessionStorage.setItem('bookIDs', bookIDs);
+
+            if (sessionStorage.getItem("userId")) { 
+                booksPurchasedMap.forEach(function(value, key) {
+                    booksPurchased.push(value);
+                });
+                jsonObj = JSON.stringify(booksPurchased);
+                console.log("booksPurchased jsonObj : ", jsonObj);
+                sessionStorage.setItem('booksPurchased', jsonObj);
+            }
 
         }
 

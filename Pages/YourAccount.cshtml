@@ -1,0 +1,87 @@
+﻿@page
+@model Fetch.Pages.YourAccountModel
+@{
+}
+<head>
+<script>
+    let userId = sessionStorage.getItem("userId");
+
+    // sum amount for the account
+    let uri = "accountSum/" + userId;
+    fetch(uri)
+    .then(response => response.json())
+    .then(
+        data => {
+            console.log("SUM : ", data);
+            let amount = data;
+            let div = document.getElementById("nopurchase");
+            let div2 = document.getElementById("books");
+            if (amount > 0) {
+                document.getElementById("txtAmount").value = amount;
+                div.style.display = "none";
+                div2.style.display = "block";
+            }
+            else {
+                div.style.display = "block";
+                div2.style.display = "none";
+
+            }
+        }); 
+    
+</script>
+</head>
+<body>
+<div id="nopurchase" class="container-fluid bg-light" style="border:2px solid">
+    <h3><u>Your Account</u></h3>
+    <br />
+    <h5>You have not made any purchase yet</h5>
+    <br />
+        
+    <div style="text-align:center">
+        <a class="btn btn-primary" href="/Books" style="color:white">Click to continue shopping</a>
+        <br /><br /><br />
+    </div>
+</div>
+
+<div id="books" class = "container-fluid bg-light" style="border:2px solid">
+    <h3><u>Your Account</u></h3>
+    <br />
+    <h5>You have purchased the following books:</h5>
+    <br />
+                                
+    <table id="tableBooks">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Publisher</th>
+                <th>Author</th>
+                <th>Price($)</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var book in Model.books)
+        {
+                    <tr>
+                        <td style="color:blue; font-weight:700"> @book.title</td>
+                        <td> @book.isbn </td>
+                        <td> @book.publisher </td>
+                        <td> @book.author </td>
+                        <td> @book.price </td>
+                    </tr>                
+        }   
+        </tbody>
+    </table>
+                                
+    <br/><br/>
+
+    <div style="text-align: center">
+        <h5>Your purchase amount is $ <input id="txtAmount" type="text" style="text-align:center; width:60px"/></h5>
+        <br/><br/>
+
+        <a class="btn btn-primary" href="/Books" style="color:white">Click to continue shopping</a>
+        <br/><br/><br/>
+    </div>
+
+</div>
+</body>

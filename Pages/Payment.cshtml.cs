@@ -7,6 +7,7 @@ namespace Fetch.Pages
     {
         public void OnGet()
         {
+
         }
     }
 }

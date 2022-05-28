@@ -6,12 +6,17 @@
 }
 <head>
     <script>
-    sessionStorage.removeItem('userId');
+        // clear session storage
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem("amount");
+        sessionStorage.removeItem("bookIDs");
+        sessionStorage.removeItem("booksSelected");
+        sessionStorage.removeItem("booksPurchased");
 
-    // Display modal
-    let modal = document.getElementById("myModal");
-    document.getElementById("para-content").innerHTML = "You have logged out successfully. You can continue browsing our selection of books."
-    modal.style.display = "block";
+        // Display modal
+        let modal = document.getElementById("myModal");
+        document.getElementById("para-content").innerHTML = "You have logged out successfully. You can continue browsing our selection of books."
+        modal.style.display = "block";
 
     </script>
 </head>
