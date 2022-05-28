@@ -1,0 +1,96 @@
+﻿@page
+@model Fetch.Pages.SignUpModel
+@{
+    ViewData["Title"] = "Books R Us";
+}
+<head>
+    <script>
+
+    function onClick() {
+        let userName = document.getElementById("txtUserName").value;
+        let password = document.getElementById("txtPassword").value;
+
+        // check empty user name
+        if (userName === "") {
+            alert("User name cannot be empty!");
+            return;
+        }
+
+        // check minimum length password
+        if (password.length < 8) {
+            alert("Password should be of minimum 8 chars!");
+            return;
+        }
+
+        // check user name in database
+        let uri = "/SignUp?name=" + userName + "&password=" + password;
+        fetch(uri)
+        .then (response => response.json())
+        .then (data => {
+            console.log("Data : ", data);
+            if (data.UserId !== 0) { // user already exists
+                alert("User name already exists!");
+            }
+            else { //success: add user to database
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "/addUser/" + userName + "/" + password, true); 
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');        
+                xhr.setRequestHeader('credentials', 'include');        
+                xhr.responseType = 'text'; 
+                xhr.send();
+
+                xhr.onload = function() {
+                    console.log("Response : ", xhr.responseText);
+                    if (xhr.status === 201) {
+                        $("#glyphSignUp").css("display", "none");
+                        $("#glyphLogin").css("display", "none");
+                        $("#glyphAccount").css("visibility", "visible");
+                        $("#glyphLogout").css("visibility", "visible");
+
+                        // set user id in sessionStorage
+                        fetch(uri)
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log("Data : ", data);
+                                let userId = data.UserId;
+
+                                console.log("userId : ", userId);
+                                alert("SignUp User ID : " + userId);
+                                sessionStorage.setItem("userId", userId);
+                            });
+
+                        // Display modal
+                        let modal = document.getElementById("myModal");
+                        document.getElementById("para-content").innerHTML = "Success: Your account has been created. You can now proceed to browse our selection of books."
+                        modal.style.display = "block";
+                    }
+                    else {
+                        alert("Error: Your account could not be created. Please contact us through our 'Contact' menu option.")
+                    }
+                }
+            }
+        });
+    }
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid bg-light" style="border:1px solid; padding-bottom:10px; padding-top:10px; margin-top:0px">
+        <div class="card m-auto" style="width:70%; height:80%; border-radius:70px">
+            <div class="card-header">
+            <h3>Sign Up</h3>
+            </div>
+
+            <div class="card-body" style="text-align:center; padding-top:2rem">
+                Enter User Name: <input type="text" id="txtUserName" placeholder="User Name" />
+                <br/><br/>
+                Enter Password: &nbsp;&nbsp;<input type="password" id="txtPassword" placeholder="Password (min. 8 chars)" />
+            </div>
+
+            <div class="card-footer" style="text-align:center">
+                <button type="button" class="btn btn-primary" value="Sign Up" onClick="onClick()">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+</body>

@@ -1,7 +1,7 @@
-﻿using BookAppWithPurchase.Models;
+﻿using Fetch.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BookApp.Pages
+namespace Fetch.Pages
 {
     public class BooksModel : PageModel
     {

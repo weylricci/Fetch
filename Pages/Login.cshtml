@@ -1,0 +1,83 @@
+﻿@page
+@model Fetch.Pages.LoginModel
+@{
+     ViewData["Title"] = "Books R Us";
+}
+
+<head>
+    <script language="JavaScript">
+        function onClick() {
+            let userName = document.getElementById("txtUserName").value;
+            let password = document.getElementById("txtPassword").value;
+
+            // check empty user name
+            if (userName === "") {
+                alert("User name cannot be empty!");
+                return;
+            }
+
+            // check minimum length password
+            if (password.length < 8) {
+                alert("Password should be of minimum 8 chars!");
+                return;
+            }
+
+            // check user name and password in database
+
+            let url = "./Login?name=" + userName + "&password=" + password;
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", url, true); 
+            xhr.setRequestHeader('Content-Type', 'application/text');        
+            xhr.responseType = 'text'; 
+
+            xhr.onload = function() {
+                let txt = xhr.responseText;
+                console.log("Login Text : ", txt);
+                const jsonObj = JSON.parse(txt);
+                console.log("jsonObj : ", jsonObj);
+                if (jsonObj.UserId === 0) { // not found
+                    // Display modal
+                    let modal = document.getElementById("myModal");
+                    document.getElementById("modal-title").innerHTML = "Login Failed"
+                    document.getElementById("para-content").innerHTML = "Invalid User Name and Password combination. Please try again or continue browsing our selection of books."
+                    modal.style.display = "block";                 
+                }
+                else {//successful login
+                    sessionStorage.setItem('userId', jsonObj.UserId);
+
+                    $("#glyphSignUp").css("display", "none");
+                    $("#glyphLogin").css("display", "none"); 
+                    $("#glyphAccount").css("visibility", "visible");
+                    $("#glyphLogout").css("visibility", "visible");
+
+                    // Display modal
+                    let modal = document.getElementById("myModal");
+                    document.getElementById("para-content").innerHTML = "You have logged in successfully. You can now proceed to browse our selection of books."
+                    modal.style.display = "block";  
+                }
+            }
+
+            xhr.send();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid bg-light" style="border:1px solid; padding-bottom:10px; padding-top:10px; margin-top:0px">
+        <div class="card mx-auto" style="width:70%; height:80%; border-radius:70px">
+            <div class="card-header">
+            <h3>Login</h3>
+            </div>
+
+            <div class="card-body" style="text-align:center; padding-top:3rem">
+                Enter User Name: <input type="text" id="txtUserName" placeholder="User Name" />
+                <br/><br/>
+                Enter Password: &nbsp;&nbsp;<input type="password" id="txtPassword" placeholder="Password" />
+            </div>
+
+            <div class="card-footer" style="text-align:center">
+                <button type="button" class="btn btn-primary" value="Login" onClick="onClick()">Login</button>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BookAppWithPurchase.Models;
+using Fetch.Models;
 
-namespace BookAppWithPurchase.Pages
+namespace Fetch.Pages
 {
     public class PurchaseModel : PageModel
     {
@@ -9,7 +9,6 @@ namespace BookAppWithPurchase.Pages
         public string amount = "";
         public void OnGet()
         {
-            QueryString query = Request.QueryString;
             amount = Request.Query["amount"];
 
             string bookIDs = Request.Query["bookIDs"];

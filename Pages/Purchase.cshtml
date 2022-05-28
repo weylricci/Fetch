@@ -1,7 +1,7 @@
 ﻿@page
-@model BookAppWithPurchase.Pages.PurchaseModel
+@model Fetch.Pages.PurchaseModel
 @{
-    ViewData["Title"] = "Book Store - Payment Confirmation";
+    ViewData["Title"] = "Books R Us";
 
 }
 <body>
@@ -26,7 +26,7 @@
                 {
                     <tr>
                         <td> @book.BookId </td>
-                        <td style="color:blue; font-weight:700; font-style:italic"><u> @book.Title</u> </td>
+                        <td style="color:blue; font-weight:700"><u> @book.Title</u> </td>
                         <td> @book.Isbn </td>
                         <td> @book.PublisherName </td>
                         <td> @book.AuthorName </td>

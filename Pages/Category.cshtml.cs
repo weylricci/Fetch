@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BookAppWithPurchase.Models;
+using Fetch.Models;
 using System.Text.Json;
 using System.Data.SqlClient;
 
@@ -12,28 +12,18 @@ namespace Fetch.Pages
         {
             string category = Request.Query["category"];
 
-            /*
-            Book book = new Book();
-            book.Title = "Title-Test";
-            book.AuthorName = "Author-Test";
-            book.PublisherName = "Publisher-Test";
-            book.CategoryName = category;
-            book.Isbn = "Isbn-Test";
-            book.BookId = 2;
-            */
-
-            List<Book> bookList = new List<Book>();
             SqlConnection con = new SqlConnection(connectionString);
+            con.Open();
 
             string selectSQL = "";
             if (category == "All")
                 selectSQL = "select BookId, Title, Isbn, PublisherName, AuthorName, CategoryName from GetBookData";
             else
                 selectSQL = "select BookId, Title, Isbn, PublisherName, AuthorName, CategoryName from GetBookData where CategoryName = '" + category + "'";
-
-            con.Open();
             SqlCommand cmd = new SqlCommand(selectSQL, con);
             SqlDataReader dr = cmd.ExecuteReader();
+
+            List<Book> bookList = new List<Book>();
             if (dr != null)
             {
                 while (dr.Read())

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BookAppWithPurchase.Pages
+namespace Fetch.Pages
 {
     public class PaymentModel : PageModel
     {

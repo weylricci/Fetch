@@ -1,7 +1,6 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 
-namespace BookAppWithPurchase.Models
+namespace Fetch.Models
 {
     public class Category
     {

@@ -1,0 +1,17 @@
+﻿@page
+@model Fetch.Pages.LogoutModel
+@{
+    ViewData["Title"] = "Books R Us";
+
+}
+<head>
+    <script>
+    sessionStorage.removeItem('userId');
+
+    // Display modal
+    let modal = document.getElementById("myModal");
+    document.getElementById("para-content").innerHTML = "You have logged out successfully. You can continue browsing our selection of books."
+    modal.style.display = "block";
+
+    </script>
+</head>
