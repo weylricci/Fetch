@@ -22,28 +22,28 @@
 
     <title>Books R Us</title>
     <script>
-      // hide/show glyphicons
-      //check user login status
-      $(document).ready(function() {
-        if (sessionStorage.getItem('userId')) {
-          $("#glyphSignUp").css("display", "none");
-          $("#glyphLogin").css("display", "none"); 
-          $("#glyphAccount").css("visibility", "visible");
-          $("#glyphLogout").css("visibility", "visible");
-       }
-        else {
-          $("#glyphSignUp").css("visibility", "visible");
-          $("#glyphLogin").css("visibility", "visible"); 
-          $("#glyphAccount").css("visibility", "hidden");
-          $("#glyphLogout").css("visibility", "hidden");
-        }
-      });
+
+        // hide/show glyphicons
+        //check user login status
+        $(document).ready(function() {
+            if (sessionStorage.getItem('userId')) {
+                $("#glyphSignUp").css("display", "none");
+                $("#glyphLogin").css("display", "none"); 
+                $("#glyphAccount").css("visibility", "visible");
+                $("#glyphLogout").css("visibility", "visible");
+            }
+            else {
+                $("#glyphSignUp").css("visibility", "visible");
+                $("#glyphLogin").css("visibility", "visible"); 
+                $("#glyphAccount").css("visibility", "hidden");
+                $("#glyphLogout").css("visibility", "hidden");
+            }
+        });
 
      function closeModal() {
         var modal = document.getElementById("myModal");
         modal.style.display = "none";
         window.location.href = "/Books";
-
       }
 
     </script>

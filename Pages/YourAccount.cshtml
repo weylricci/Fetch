@@ -16,7 +16,12 @@
             let amount = data;
             let div = document.getElementById("nopurchase");
             let div2 = document.getElementById("books");
+
             if (amount > 0) {
+                uri = "/YourAccount?userID=" + userId;
+                fetch(uri)
+                    .then(response => console.log("Response : ", response));                  
+
                 document.getElementById("txtAmount").value = amount;
                 div.style.display = "none";
                 div2.style.display = "block";

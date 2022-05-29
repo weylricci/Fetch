@@ -65,7 +65,9 @@ namespace Fetch.Models
                     book.CategoryName = dr["CategoryName"].ToString();
                     bookList.Add(book);
                 }
+                dr.Close();
             }
+
             con.Close();
 
             return bookList;
@@ -90,6 +92,7 @@ namespace Fetch.Models
                     book.AuthorName = dr["AuthorName"].ToString();
                     book.CategoryName = dr["CategoryName"].ToString();
                 }
+                dr.Close();
             }
             con.Close();
 

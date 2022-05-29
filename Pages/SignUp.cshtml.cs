@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
 using System.Data.SqlClient;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace Fetch.Pages
 {
